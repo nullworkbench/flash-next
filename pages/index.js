@@ -1,65 +1,148 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import firebase, { db } from "../plugins/firebase";
 
-export default function Home() {
-  return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+import Head from "next/head";
+import styles from "../styles/Home.module.css";
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+class Index extends React.Component {
+  state = {
+    user: null,
+    posts: [],
+  };
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
+  async getPosts() {
+    this.state.posts = [];
+    await db
+      .collection("posts")
+      .orderBy("createdAt", "desc")
+      .get()
+      .then((docs) => {
+        docs.forEach((doc) => {
+          let item = doc.data();
+          item.id = doc.id;
+          this.state.posts.push(item);
+        });
+        // this.setState({ posts }); // this.state.posts.pushはダメなのでsetStateで
+      });
+    console.log(this.state.posts);
+    console.log(this.state.posts.length);
+  }
 
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+  login() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    firebase.auth().signInWithRedirect(provider);
+  }
+  logout() {
+    firebase.auth().signOut();
+  }
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
+  async handlePost(event) {
+    event.preventDefault();
 
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
+    const title = document.getElementById("new_post_title").value;
 
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+    const res = await db.collection("posts").add({
+      title: title,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+  }
+
+  handleDelete(docId) {
+    db.collection("posts").doc(docId).delete();
+  }
+
+  async handleUpdate(docId) {
+    const title = document.getElementById("renew_post_title").value;
+    const res = await db
+      .collection("posts")
+      .doc(docId)
+      .update({ title: title })
+      .then(() => {
+        // success
+        console.log("success");
+      })
+      .catch((error) => {
+        // error
+        console.log(error);
+      });
+    console.log(res);
+  }
+
+  async componentDidMount() {
+    await this.getPosts();
+
+    db.collection("posts").onSnapshot((snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        if (change.type === "added") {
+          console.log("added");
+          this.getPosts();
+        } else if (change.type === "modified") {
+          console.log("modified");
+          this.getPosts();
+        } else if (change.type === "removed") {
+          console.log("removed");
+          this.getPosts();
+        }
+      });
+    });
+
+    // firebaseのauthの状態が変わった時にthis.state.userにユーザー情報を代入
+    firebase.auth().onAuthStateChanged((user) => {
+      this.setState({ user });
+      // console.log(user);
+    });
+  }
+
+  componentWillUnmount() {
+    // this.unsubscribe();
+    db.collection("posts").onSnapshot(() => {});
+  }
+
+  render() {
+    return (
+      <div className={styles.container}>
+        <Head>
+          <title>Flash</title>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+
+        <div>
+          {this.state.user ? (
+            <button onClick={this.logout}>Logout</button>
+          ) : (
+            <button onClick={this.login}>Login</button>
+          )}
         </div>
-      </main>
 
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
-  )
+        <div id="new_post">
+          <form onSubmit={this.handlePost}>
+            <input type="text" id="new_post_title" placeholder="title" />
+            <textarea id="new_post_body" cols="30" rows="10"></textarea>
+            <button type="submit">POST</button>
+          </form>
+        </div>
+
+        <div id="posts">
+          {this.state.posts.map((post) => (
+            <div key={post.id}>
+              <h3>{post.title}</h3>
+              <span>{post.id}</span>
+              <button onClick={() => this.handleDelete(post.id)}>DELETE</button>
+              {/* onClick={this.handleDelete(post.id)} とすると {}内がプログラムとして認識され、handleDelete()が発火してしまう */}
+              <div id="renew">
+                <input
+                  type="text"
+                  id="renew_post_title"
+                  placeholder={post.title}
+                />
+                <button onClick={() => this.handleUpdate(post.id)}>
+                  UPDATE
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 }
+export default Index;
