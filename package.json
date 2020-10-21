@@ -13,6 +13,7 @@
     "react-dom": "16.14.0"
   },
   "devDependencies": {
-    "firebase": "^7.24.0"
+    "firebase": "^7.24.0",
+    "sass": "^1.27.0"
   }
 }

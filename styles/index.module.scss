@@ -1,0 +1,19 @@
+@import "variables";
+.header {
+  background: $theme-color;
+  width: 100vw;
+
+  h1 {
+    font-weight: 300;
+  }
+}
+
+.new_post {
+  width: 75%;
+  margin: 0 auto;
+  textarea {
+    width: 100%;
+    height: fit-content;
+    min-height: 1rem;
+  }
+}
