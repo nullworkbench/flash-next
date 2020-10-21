@@ -4,28 +4,48 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 
 class Index extends React.Component {
-  state = {
-    user: null,
-    posts: [],
-  };
-
-  async getPosts() {
-    this.state.posts = [];
-    await db
-      .collection("posts")
-      .orderBy("createdAt", "desc")
-      .get()
-      .then((docs) => {
-        docs.forEach((doc) => {
-          let item = doc.data();
-          item.id = doc.id;
-          this.state.posts.push(item);
-        });
-        // this.setState({ posts }); // this.state.posts.pushはダメなのでsetStateで
-      });
-    console.log(this.state.posts);
-    console.log(this.state.posts.length);
+  constructor(props) {
+    super(props);
+    this.unsubscribe = null;
+    this.state = {
+      user: null,
+      posts: [],
+    };
   }
+
+  // async getPosts() {
+  //   const items = [];
+  //   await db
+  //     .collection("posts")
+  //     .orderBy("createdAt", "desc")
+  //     .get()
+  //     .then((docs) => {
+  //       docs.forEach((doc) => {
+  //         let item = doc.data();
+  //         item.id = doc.id;
+  //         items.push(item);
+  //       });
+  //       this.setState({ posts: items }); // this.state.posts.pushはダメなのでsetStateで
+  //     });
+  //   console.log(this.state.posts);
+  //   console.log(this.state.posts.length);
+  // }
+
+  onCollectionUpdate = (querySnapshot) => {
+    const items = [];
+    querySnapshot.forEach((doc) => {
+      const { title, createdAt } = doc.data();
+      items.push({
+        id: doc.id,
+        title: title,
+        createdAt: createdAt,
+      });
+    });
+    this.setState({
+      posts: items,
+    });
+    console.log(this.state.posts);
+  };
 
   login() {
     const provider = new firebase.auth.GoogleAuthProvider();
@@ -68,22 +88,26 @@ class Index extends React.Component {
   }
 
   async componentDidMount() {
-    await this.getPosts();
+    // await this.getPosts();
 
-    db.collection("posts").onSnapshot((snapshot) => {
-      snapshot.docChanges().forEach((change) => {
-        if (change.type === "added") {
-          console.log("added");
-          this.getPosts();
-        } else if (change.type === "modified") {
-          console.log("modified");
-          this.getPosts();
-        } else if (change.type === "removed") {
-          console.log("removed");
-          this.getPosts();
-        }
-      });
-    });
+    // db.collection("posts").onSnapshot((snapshot) => {
+    //   snapshot.docChanges().forEach((change) => {
+    //     if (change.type === "added") {
+    //       console.log("added");
+    //       this.getPosts();
+    //     } else if (change.type === "modified") {
+    //       console.log("modified");
+    //       this.getPosts();
+    //     } else if (change.type === "removed") {
+    //       console.log("removed");
+    //       this.getPosts();
+    //     }
+    //   });
+    // });
+
+    this.unsubscribe = db
+      .collection("posts")
+      .onSnapshot(this.onCollectionUpdate);
 
     // firebaseのauthの状態が変わった時にthis.state.userにユーザー情報を代入
     firebase.auth().onAuthStateChanged((user) => {
@@ -93,8 +117,8 @@ class Index extends React.Component {
   }
 
   componentWillUnmount() {
-    // this.unsubscribe();
-    db.collection("posts").onSnapshot(() => {});
+    this.unsubscribe();
+    // db.collection("posts").onSnapshot(() => {});
   }
 
   render() {
