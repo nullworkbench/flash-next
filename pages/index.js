@@ -62,7 +62,9 @@ class Index extends React.Component {
 
   // delete処理
   handleDelete(docId) {
-    db.collection("posts").doc(docId).delete();
+    if (confirm("Are you sure want to Delete?")) {
+      db.collection("posts").doc(docId).delete();
+    }
   }
 
   // update処理
