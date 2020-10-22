@@ -4,6 +4,28 @@
   box-sizing: border-box;
 }
 
+input,
+button,
+select,
+textarea {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  font: inherit;
+  outline: none;
+}
+input,
+textarea {
+  background: #fff;
+  padding: 0.4em 0.8em;
+  line-height: 1;
+  height: 2rem;
+  min-height: 2rem;
+}
+
 html,
 body {
   padding: 0;

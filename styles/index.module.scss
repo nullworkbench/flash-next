@@ -13,7 +13,10 @@
   margin: 0 auto;
   textarea {
     width: 100%;
-    height: fit-content;
-    min-height: 1rem;
+    resize: none;
   }
+}
+
+.post_body {
+  white-space: pre-wrap;
 }
