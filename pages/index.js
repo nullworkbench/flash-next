@@ -90,13 +90,18 @@ class Index extends React.Component {
     textarea.style.height = lines + 1 + "rem";
   }
 
+  // @@@をpre codeに置き換え
   replaceHighlights() {
-    const obj = document.getElementsByClassName("post_body")[0];
-    console.log(obj);
-    obj.innerHTML = obj.innerHTML.replace("@@@", "<pre><code>");
-    obj.innerHTML = obj.innerHTML.replace("@@@", "</code></pre>");
-    // obj.replace(/&lt;/g, "<");
-    // obj.replace(/&gt;/g, ">");
+    // HTMLCollectionは配列でないためforEachが使えるように配列として代入
+    const objs = Array.from(document.getElementsByClassName("post_body"));
+
+    // 全ての@@@を置き換える
+    objs.forEach((obj) => {
+      while (obj.innerHTML.match(/@@@/)) {
+        obj.innerHTML = obj.innerHTML.replace("@@@", "<pre><code>");
+        obj.innerHTML = obj.innerHTML.replace("@@@", "</code></pre>");
+      }
+    });
   }
 
   async componentDidMount() {
