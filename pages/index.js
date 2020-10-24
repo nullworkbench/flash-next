@@ -49,13 +49,7 @@ class Index extends React.Component {
     event.preventDefault(); // formのsubmitをキャンセル
 
     const title = document.getElementById("new_post_title").value;
-    const body = document.getElementById("new_post_body");
-
-    const syntaxed_body = body.value;
-    while (syntaxed_body.match(/@@@/)) {
-      syntaxed_body = syntaxed_body.replace("@@@", "<pre><code>");
-      syntaxed_body = syntaxed_body.replace("@@@", "</code></pre>");
-    }
+    const body = document.getElementById("new_post_body").value;
 
     const res = await db.collection("posts").add({
       title: title,

@@ -8,7 +8,11 @@ export default function highlightjs() {
   // 全ての@@@を置き換える
   objs.forEach((obj) => {
     while (obj.innerHTML.match(/@@@/)) {
-      obj.innerHTML = obj.innerHTML.replace("@@@", "<pre><code>");
+      if (obj.innerHTML.match(/@@@\n/)) {
+        obj.innerHTML = obj.innerHTML.replace(/@@@\n/, "<pre><code>");
+      } else {
+        obj.innerHTML = obj.innerHTML.replace("@@@", "<pre><code>");
+      }
       obj.innerHTML = obj.innerHTML.replace("@@@", "</code></pre>");
     }
   });
