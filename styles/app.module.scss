@@ -1,0 +1,10 @@
+@import "variables";
+
+.header {
+  background: $theme-color;
+  width: 100vw;
+
+  h1 {
+    font-weight: 300;
+  }
+}

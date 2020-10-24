@@ -1,7 +1,8 @@
 import firebase, { db } from "../plugins/firebase";
-import hljs from "highlight.js";
+import highlightjs from "../components/highlight";
 
 import Head from "next/head";
+import Link from "next/link";
 import styles from "../styles/index.module.scss";
 
 class Index extends React.Component {
@@ -31,11 +32,8 @@ class Index extends React.Component {
     });
     // console.log(this.state.posts);
 
-    // @@@置き換え
-    this.replaceHighlights();
-    // highlight.js実行
-    hljs.initHighlighting();
-    hljs.initHighlighting.called = false; //hljs側でinitが１回しか走らないようになっているので、そのフラグを折る。
+    // @@@置き換え＆highlight.js
+    highlightjs();
   };
 
   login() {
@@ -51,7 +49,13 @@ class Index extends React.Component {
     event.preventDefault(); // formのsubmitをキャンセル
 
     const title = document.getElementById("new_post_title").value;
-    const body = document.getElementById("new_post_body").value;
+    const body = document.getElementById("new_post_body");
+
+    const syntaxed_body = body.value;
+    while (syntaxed_body.match(/@@@/)) {
+      syntaxed_body = syntaxed_body.replace("@@@", "<pre><code>");
+      syntaxed_body = syntaxed_body.replace("@@@", "</code></pre>");
+    }
 
     const res = await db.collection("posts").add({
       title: title,
@@ -92,20 +96,6 @@ class Index extends React.Component {
     textarea.style.height = lines + 1 + "rem";
   }
 
-  // @@@をpre codeに置き換え
-  replaceHighlights() {
-    // HTMLCollectionは配列でないためforEachが使えるように配列として代入
-    const objs = Array.from(document.getElementsByClassName("post_body"));
-
-    // 全ての@@@を置き換える
-    objs.forEach((obj) => {
-      while (obj.innerHTML.match(/@@@/)) {
-        obj.innerHTML = obj.innerHTML.replace("@@@", "<pre><code>");
-        obj.innerHTML = obj.innerHTML.replace("@@@", "</code></pre>");
-      }
-    });
-  }
-
   async componentDidMount() {
     // posts取得・リアルタイム更新
     this.unsubscribe = db
@@ -132,10 +122,6 @@ class Index extends React.Component {
           <title>Flash</title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
-
-        <header className={styles.header}>
-          <h1>Flash</h1>
-        </header>
 
         {/* LOGIN START */}
         <div>
@@ -168,6 +154,9 @@ class Index extends React.Component {
               <div className={styles.post_body + " post_body"}>{post.body}</div>
               <button onClick={() => this.handleDelete(post.id)}>DELETE</button>
               {/* onClick={this.handleDelete(post.id)} とすると {}内がプログラムとして認識され、handleDelete()が発火してしまう */}
+              <Link href="/posts/[id]" as={`/posts/${post.id}`}>
+                <a>Detail</a>
+              </Link>
               <div id="renew">
                 <input
                   type="text"
