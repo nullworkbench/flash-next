@@ -20,6 +20,7 @@ class Index extends React.Component {
     const items = [];
     querySnapshot.forEach((doc) => {
       const { title, body, createdAt } = doc.data();
+
       items.push({
         id: doc.id,
         title: title,
@@ -148,7 +149,7 @@ class Index extends React.Component {
               <div className={styles.post_body + " post_body"}>{post.body}</div>
               <button onClick={() => this.handleDelete(post.id)}>DELETE</button>
               {/* onClick={this.handleDelete(post.id)} とすると {}内がプログラムとして認識され、handleDelete()が発火してしまう */}
-              <Link href="/posts/[id]" as={`/posts/${post.id}`}>
+              <Link href={{ pathname: "/post/[id]", query: { id: post.id } }}>
                 <a>Detail</a>
               </Link>
               <div id="renew">
