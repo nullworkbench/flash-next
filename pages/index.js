@@ -46,17 +46,31 @@ class Index extends React.Component {
   }
 
   // post処理
-  async handlePost(event) {
-    event.preventDefault(); // formのsubmitをキャンセル
+  async handlePost() {
+    // const user = this.state.user;
+    // console.log(this.state.user);
 
-    const title = document.getElementById("new_post_title").value;
-    const body = document.getElementById("new_post_body").value;
+    const title = document.getElementById("new_post_title");
+    const body = document.getElementById("new_post_body");
 
-    const res = await db.collection("posts").add({
-      title: title,
-      body: body,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-    });
+    const res = await db
+      .collection("posts")
+      .add({
+        title: title.value,
+        body: body.value,
+        // user: this.state.user.uid,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      })
+      .then(() => {
+        // success
+        console.log("post succeed");
+        title.value = "";
+        body.value = "";
+      })
+      .catch((error) => {
+        // error
+        console.log(error);
+      });
   }
 
   // delete処理
@@ -101,7 +115,7 @@ class Index extends React.Component {
     // firebaseのauthの状態が変わった時にthis.state.userにユーザー情報を代入
     firebase.auth().onAuthStateChanged((user) => {
       this.setState({ user });
-      // console.log(user);
+      // console.log(this.state.user);
     });
   }
 
@@ -121,30 +135,35 @@ class Index extends React.Component {
         {/* LOGIN START */}
         <div>
           {this.state.user ? (
-            <button onClick={this.logout}>Logout</button>
+            <div>
+              <p>Hi, {this.state.user.displayName}</p>
+              <button onClick={this.logout}>Logout</button>
+            </div>
           ) : (
-            <button onClick={this.login}>Login</button>
+            <div>
+              <button onClick={this.login}>Login</button>
+            </div>
           )}
         </div>
         {/* LOGIN END */}
 
         {/* 新規投稿 START */}
         <div id="new_post" className={styles.new_post}>
-          <form onSubmit={this.handlePost}>
+          <div>
             <input type="text" id="new_post_title" placeholder="title" />
             <textarea
               id="new_post_body"
               onChange={() => this.execTextareaHeight()}
             />
-            <button type="submit">POST</button>
-          </form>
+            <button onClick={this.handlePost}>POST</button>
+          </div>
         </div>
         {/* 新規投稿 END */}
 
         {/* 投稿一覧 START */}
         <div id="posts">
           {this.state.posts.map((post) => (
-            <div key={post.id}>
+            <div key={post.id} className={styles.post_wrapper}>
               <h3>{post.title}</h3>
               <div className={styles.post_body + " post_body"}>{post.body}</div>
               <button onClick={() => this.handleDelete(post.id)}>DELETE</button>
@@ -166,8 +185,12 @@ class Index extends React.Component {
           ))}
         </div>
         {/* 投稿一覧 END */}
-        <button onClick={this.replaceHighlights}>REPLACE</button>
+
         <div>
+          <br />
+          <br />
+          <br />
+          <p>SAMPLE</p>
           <pre>
             <code>
               {`
