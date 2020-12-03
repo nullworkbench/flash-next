@@ -9,8 +9,16 @@
   }
 }
 
+.posts_wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+}
 .post_wrapper {
   margin-top: 30px;
+  background: #fff;
+  padding: 1rem;
+  // box-shadow: 0 10px 25px #ddd;
+  border-radius: 0.8rem;
 }
 .post_body {
   white-space: pre-wrap;
