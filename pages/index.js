@@ -59,15 +59,24 @@ class Index extends React.Component {
     // });
 
     const items = snapshots.docs.map((doc) => {
-      return Object.assign(doc.data(), { id: doc.id });
+      console.log("2");
+      return Object.assign(
+        doc.data(),
+        { id: doc.id },
+        { username: "undefined" }
+      );
+    });
+    items.forEach(async (item) => {
+      const ref = await db.collection("users").doc(item.userId).get();
+      item.username = ref.data().name;
+      console.log("3");
     });
 
     this.setState({
       posts: items,
       isFetching: false,
     });
-
-    // console.log(this.state.posts);
+    console.log("4");
   };
 
   // post処理
@@ -244,7 +253,7 @@ class Index extends React.Component {
                       {post.body}
                     </div>
                     <div>
-                      <span>{post.username}</span>
+                      <span>User: {post.username}</span>
                     </div>
                     <button onClick={() => this.handleDelete(post.id)}>
                       DELETE
