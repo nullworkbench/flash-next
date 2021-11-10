@@ -1,6 +1,11 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  getAuth,
+  signInWithPopup,
+  signOut,
+} from "firebase/auth";
 
 const config = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -16,21 +21,32 @@ const config = {
 // firebase init
 const app = initializeApp(config);
 export const db = getFirestore(app);
+export const auth = getAuth();
 
 // auth
 const provider = new GoogleAuthProvider();
-const auth = getAuth();
 export function signInWithGoogle() {
   signInWithPopup(auth, provider)
     .then((result) => {
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential?.accessToken;
       const user = result.user;
-      console.log(user);
     })
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
       console.log(`SignIn Error: ${errorCode}. ${errorMessage}`);
     });
+}
+export function signOutNow(): Promise<boolean> {
+  const res = signOut(auth)
+    .then(() => {
+      // Sign out successful
+      return true;
+    })
+    .catch((error) => {
+      console.log(error);
+      return false;
+    });
+  return res;
 }
