@@ -6,12 +6,8 @@ import { db, auth, signInWithGoogle, signOutNow } from "@/plugins/firebase";
 import { collection, query, limit, orderBy, getDocs } from "firebase/firestore";
 import { useState } from "react";
 import { onAuthStateChanged } from "@firebase/auth";
-
-type User = {
-  displayName: string;
-  photoURL: string;
-  uid: string;
-};
+import useStaticSWR from "@/plugins/useStaticSWR";
+import { useUserInfo } from "@/stores/contexts";
 
 type Post = {
   title: string;
@@ -33,7 +29,10 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 const Home: NextPage<Props> = ({ posts }: Props) => {
-  const [user, setUser] = useState<User>();
+  const { data: userInfo, mutate: mutateUserInfo } = useUserInfo();
+  const updateUser = (u: User | null) => {
+    mutateUserInfo(u);
+  };
 
   onAuthStateChanged(auth, (u) => {
     if (u) {
@@ -42,9 +41,7 @@ const Home: NextPage<Props> = ({ posts }: Props) => {
         photoURL: u.photoURL ?? "",
         uid: u.uid,
       };
-      if (!user) {
-        setUser(newUser);
-      }
+      updateUser(newUser);
     } else {
       // Not signned in
     }
@@ -57,7 +54,7 @@ const Home: NextPage<Props> = ({ posts }: Props) => {
     // signOutが正常に終了すればuserを空に
     const res = await signOutNow();
     if (res) {
-      setUser(undefined);
+      updateUser(null);
     } else {
       // signOut failed
     }
@@ -67,7 +64,7 @@ const Home: NextPage<Props> = ({ posts }: Props) => {
     <div className="container mx-auto">
       <div>
         <button onClick={() => signIn()}>signIn</button>
-        <p>{user ? user.displayName : "_"}</p>
+        <p>{userInfo ? userInfo.displayName : "_"}</p>
         <button onClick={() => signOut()}>signOut</button>
       </div>
       {posts.map((post, postIdx) => {
@@ -77,6 +74,13 @@ const Home: NextPage<Props> = ({ posts }: Props) => {
           </div>
         );
       })}
+      <button
+        onClick={() => {
+          console.log(userInfo);
+        }}
+      >
+        showUserInfo
+      </button>
       <div className={styles.container}>
         <CodeArea>display: block;</CodeArea>
       </div>

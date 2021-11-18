@@ -6,6 +6,7 @@ import {
   signInWithPopup,
   signOut,
 } from "firebase/auth";
+import useStaticSWR from "./useStaticSWR";
 
 const config = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -30,7 +31,13 @@ export function signInWithGoogle() {
     .then((result) => {
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential?.accessToken;
-      const user = result.user;
+      const u = result.user;
+      const user: User = {
+        displayName: u.displayName!,
+        photoURL: u.photoURL!,
+        uid: u.uid,
+      };
+      useStaticSWR("loginUser", user);
     })
     .catch((error) => {
       const errorCode = error.code;
