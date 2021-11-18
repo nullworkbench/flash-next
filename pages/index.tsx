@@ -4,9 +4,7 @@ import CodeArea from "@/components/CodeArea";
 // import { getAllPosts } from "@/plugins/firestore";
 import { db, auth, signInWithGoogle, signOutNow } from "@/plugins/firebase";
 import { collection, query, limit, orderBy, getDocs } from "firebase/firestore";
-import { useState } from "react";
 import { onAuthStateChanged } from "@firebase/auth";
-import useStaticSWR from "@/plugins/useStaticSWR";
 import { useUserInfo } from "@/stores/contexts";
 
 type Post = {
