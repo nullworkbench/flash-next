@@ -56,7 +56,7 @@ const GlobalHeader: React.FC = () => {
         <div className="w-10 h-10">
           <button onClick={() => setIsUserInfoModalOpen(true)}>
             <img
-              src={userInfo?.photoURL!}
+              src={userInfo.photoURL ?? ""}
               className="rounded-full"
               alt="ユーザーアイコン"
             />
@@ -65,8 +65,21 @@ const GlobalHeader: React.FC = () => {
             isOpen={isUserInfoModalOpen}
             closeModal={() => setIsUserInfoModalOpen(false)}
           >
-            <div>
-              <button onClick={() => signOut()}>signOut</button>
+            <div className="p-8">
+              <img
+                src={userInfo.photoURL ?? ""}
+                className="w-1/4 mx-auto mb-3 rounded-full"
+                alt="ユーザーアイコン"
+              />
+              <p className="text-center text-2xl font-semibold mb-10">
+                {userInfo.displayName}
+              </p>
+              <button
+                className="block mx-auto px-12 py-2 rounded-lg bg-blue-200"
+                onClick={() => signOut()}
+              >
+                sign out
+              </button>
             </div>
           </Modal>
         </div>

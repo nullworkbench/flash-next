@@ -22,7 +22,7 @@ const Modal: React.FC<Props> = ({ children, isOpen, closeModal }) => {
             onClick={() => closeModal()}
           ></div>
           {/* モーダル中身 */}
-          <div className="relative top-1/2 left-1/2 transform -translate-x-1/2 w-max min-w-md filter drop-shadow-lg bg-theme rounded-xl p-4">
+          <div className="relative top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-max min-w-md filter drop-shadow-lg bg-theme rounded-xl p-4">
             {children}
           </div>
         </div>
