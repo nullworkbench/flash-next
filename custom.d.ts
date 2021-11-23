@@ -9,3 +9,8 @@ type User = {
   photoURL: string;
   uid: string;
 };
+
+type Post = {
+  title: string;
+  userId: string;
+};
