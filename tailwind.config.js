@@ -11,6 +11,14 @@ module.exports = {
       zIndex: {
         99: 99,
       },
+      minWidth: {
+        sm: "25%",
+        md: "50%",
+        lg: "75%",
+      },
+      backgroundColor: {
+        theme: "#e6e7ee",
+      },
     },
     fontFamily: {
       jp: [
