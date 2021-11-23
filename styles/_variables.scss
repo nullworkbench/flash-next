@@ -1,0 +1,14 @@
+$themeColor: #f2ec44;
+$bgColor: #e6e7ee;
+$textColor: #44476a;
+
+@mixin neumorphismA {
+  border-radius: 0.5rem;
+  background: $bgColor;
+  box-shadow: 6px 6px 12px #c4c4ca, -6px -6px 12px #ffffff;
+}
+@mixin neumorphismB {
+  border-radius: 22px;
+  // background: $bgColor;
+  box-shadow: inset 6px 6px 12px #c4c4ca, inset -6px -6px 12px #ffffff;
+}

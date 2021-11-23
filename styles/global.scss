@@ -1,0 +1,22 @@
+@use "_variables.scss" as v;
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  background: v.$bgColor;
+  color: v.$textColor;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.nmp {
+  @include v.neumorphismA;
+}
