@@ -50,31 +50,30 @@ const GlobalHeader: React.FC = () => {
         <Icon type="FlashLogo" />
       </div>
       {/* User */}
-      <div>
-        {userInfo ? (
-          // ログイン済み
-          <div className="w-10">
-            <button onClick={() => setIsUserInfoModalOpen(true)}>
-              <img
-                src={userInfo?.photoURL!}
-                className="rounded-full"
-                alt="ユーザーアイコン"
-              />
-            </button>
-            <Modal
-              isOpen={isUserInfoModalOpen}
-              closeModal={() => setIsUserInfoModalOpen(false)}
-            >
-              <div>
-                <button onClick={() => signOut()}>signOut</button>
-              </div>
-            </Modal>
-          </div>
-        ) : (
-          // 未ログイン
-          <button onClick={() => signIn()}>signIn</button>
-        )}
-      </div>
+
+      {userInfo ? (
+        // ログイン済み
+        <div className="w-10 h-10">
+          <button onClick={() => setIsUserInfoModalOpen(true)}>
+            <img
+              src={userInfo?.photoURL!}
+              className="rounded-full"
+              alt="ユーザーアイコン"
+            />
+          </button>
+          <Modal
+            isOpen={isUserInfoModalOpen}
+            closeModal={() => setIsUserInfoModalOpen(false)}
+          >
+            <div>
+              <button onClick={() => signOut()}>signOut</button>
+            </div>
+          </Modal>
+        </div>
+      ) : (
+        // 未ログイン
+        <button onClick={() => signIn()}>signIn</button>
+      )}
     </header>
   );
 };
