@@ -7,10 +7,6 @@ type Props = {
 };
 
 const Modal: React.FC<Props> = ({ children, isOpen, closeModal }) => {
-  //   const [isOpen, setIsOpen] = useState(false);
-  //   function toggleIsOpen() {
-  //     setIsOpen(!isOpen);
-  //   }
   return (
     <>
       {isOpen ? (
