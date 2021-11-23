@@ -72,7 +72,9 @@ const GlobalHeader: React.FC = () => {
         </div>
       ) : (
         // 未ログイン
-        <button onClick={() => signIn()}>signIn</button>
+        <button className="py-2" onClick={() => signIn()}>
+          signIn
+        </button>
       )}
     </header>
   );
