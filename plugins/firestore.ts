@@ -1,10 +1,4 @@
-import {
-  collection,
-  getDocs,
-  limit,
-  orderBy,
-  query,
-} from "@firebase/firestore";
+import { collection, getDocs, limit, orderBy, query } from "firebase/firestore";
 import { db } from "./firebase";
 
 export async function getRecentPosts(num: number) {
@@ -14,7 +8,7 @@ export async function getRecentPosts(num: number) {
   querySnapshot.forEach((doc) => {
     const data = doc.data();
     posts.push({
-      title: data.title,
+      body: data.body,
       userId: "aaa",
       createdAt: data.createdAt.toDate().toLocaleString("ja-JP"), // 日本式の日付にフォーマット
     });

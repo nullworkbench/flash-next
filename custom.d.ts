@@ -11,7 +11,7 @@ type User = {
 };
 
 type Post = {
-  title: string;
+  body: string;
   userId: string;
   createdAt: string;
 };
