@@ -21,6 +21,8 @@ const Home: NextPage<Props> = ({ posts }: Props) => {
         return (
           <div key={postIdx}>
             <p>{post.title}</p>
+            <p>{post.userId}</p>
+            <p>{post.createdAt}</p>
           </div>
         );
       })}

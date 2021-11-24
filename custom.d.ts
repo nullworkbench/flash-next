@@ -13,4 +13,5 @@ type User = {
 type Post = {
   title: string;
   userId: string;
+  createdAt: string;
 };
