@@ -71,7 +71,7 @@ const Home: NextPage<Props> = ({ posts }: Props) => {
           // @@@はスキップ
           if (b.match("@@@")) return;
           // 空は改行
-          if (b.length == 0) return <br />;
+          if (b.length == 0) return <br key={idx} />;
           // その他はそのまま出力
           return <p key={idx}>{b}</p>;
         })}
