@@ -2,6 +2,7 @@ import type { NextPage, GetStaticProps } from "next";
 import styles from "../styles/Home.module.css";
 import CodeArea from "@/components/CodeArea";
 import { getRecentPosts, addPost } from "@/plugins/firestore";
+import { useUserInfo } from "@/stores/contexts";
 import { useState } from "react";
 
 type Props = {
@@ -16,16 +17,27 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 const Home: NextPage<Props> = ({ posts }: Props) => {
+  // ユーザー情報
+  const { data: userInfo } = useUserInfo();
   // Formのbody
   const [formBody, setFormBody] = useState("");
 
+  // 新規投稿
   async function post() {
-    const post = {
-      body: "bbb",
-    };
-    const docId = await addPost(post);
+    // ログインしているか
+    if (userInfo) {
+      const post = {
+        body: formBody,
+        userId: userInfo.uid,
+      };
+      const docId = await addPost(post);
 
-    console.log(`Document added with ID: ${docId}`);
+      docId
+        ? console.log(`Document added with ID: ${docId}`)
+        : console.log("Unable to add Document.");
+    } else {
+      alert("Please login first.");
+    }
   }
 
   return (

@@ -25,10 +25,16 @@ export async function getRecentPosts(num: number) {
 }
 
 // firestoreへ新規投稿を行う関数
-export async function addPost(args: { body: string }) {
-  const post = { ...args };
+export async function addPost(args: {
+  body: string;
+  userId: string;
+}): Promise<string | boolean> {
+  const post = { ...args, createdAt: Timestamp.now() };
   const res = await addDoc(collection(db, "posts"), post)
     .then((docRef) => docRef.id)
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      return false;
+    });
   return res;
 }
