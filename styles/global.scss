@@ -12,6 +12,14 @@ body {
   color: v.$textColor;
 }
 
+section {
+  margin-top: 4rem;
+}
+
+pre {
+  font-family: inherit;
+}
+
 a {
   color: inherit;
   text-decoration: none;

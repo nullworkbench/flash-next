@@ -43,21 +43,26 @@ const Home: NextPage<Props> = ({ posts }: Props) => {
   return (
     <div className="container mx-auto">
       {/* 新規投稿 */}
-      <section>
+      <section className="nmp p-8 max-w-lg mx-auto">
         <textarea
           name="body"
+          className="block w-full resize-y bg-transparent outline-none"
+          rows={3}
+          placeholder="Something Flashable..."
           onChange={(e) => {
             setFormBody(e.currentTarget.value);
           }}
         ></textarea>
-        <button onClick={() => post()}>Post</button>
+        <button className="block ml-auto mr-0" onClick={() => post()}>
+          Post
+        </button>
       </section>
       {/* 投稿一覧 */}
       <div>
         {posts.map((post, postIdx) => {
           return (
             <div key={postIdx}>
-              <p>body: {post.body}</p>
+              <pre>body: {post.body}</pre>
               <p>userId: {post.userId}</p>
               <p>createdAt: {post.createdAt}</p>
             </div>
