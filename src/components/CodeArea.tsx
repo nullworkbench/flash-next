@@ -10,11 +10,9 @@ const CodeArea: FC = ({ children }) => {
     hljs.highlightAll();
   }, []);
   return (
-    <div>
-      <pre>
-        <code className="font-code">{children}</code>
-      </pre>
-    </div>
+    <pre>
+      <code className="font-code">{children}</code>
+    </pre>
   );
 };
 

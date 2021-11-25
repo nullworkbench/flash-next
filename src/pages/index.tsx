@@ -40,6 +40,47 @@ const Home: NextPage<Props> = ({ posts }: Props) => {
     }
   }
 
+  // bodyをJSX.Elementに整形
+  function splitBody(body: string): JSX.Element {
+    // bodyを改行文字で区切る
+    const splittedBody = body.split("\n");
+    // コードが入ったインデックスを保存する配列
+    const codeIndexes: number[] = [];
+    // コードの開始（@@@）を判定
+    let isCodeHead = true;
+    // コードが入っている場所を判定
+    splittedBody.map((str, strIdx) => {
+      if (str.match("@@@")) {
+        // 開始タグであればインデックスを保存
+        if (isCodeHead) {
+          codeIndexes.push(strIdx + 1);
+          isCodeHead = false;
+        } else {
+          isCodeHead = true;
+        }
+      }
+    });
+    // CodeAreaを含むBody Elmentを構成
+    const bodyElm = (
+      <>
+        {splittedBody.map((b, idx) => {
+          // codeIndexesに含まれていればCodeArea
+          if (codeIndexes.includes(idx)) {
+            return <CodeArea key={idx}>{b}</CodeArea>;
+          }
+          // @@@はスキップ
+          if (b.match("@@@")) return;
+          // 空は改行
+          if (b.length == 0) return <br />;
+          // その他はそのまま出力
+          return <p key={idx}>{b}</p>;
+        })}
+      </>
+    );
+
+    return bodyElm;
+  }
+
   return (
     <div className="container mx-auto">
       {/* 新規投稿 */}
@@ -61,17 +102,14 @@ const Home: NextPage<Props> = ({ posts }: Props) => {
       <section>
         {posts.map((post, postIdx) => {
           return (
-            <div key={postIdx}>
-              <pre>body: {post.body}</pre>
-              <p>userId: {post.userId}</p>
-              <p>createdAt: {post.createdAt}</p>
+            <div key={postIdx} className="nmp p-8 mb-16">
+              <div>@{post.userId}</div>
+              <div className="my-4">{splitBody(post.body)}</div>
+              <div className="text-right text-gray-400">{post.createdAt}</div>
             </div>
           );
         })}
       </section>
-      <div>
-        <CodeArea>display: block;</CodeArea>
-      </div>
     </div>
   );
 };
