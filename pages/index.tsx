@@ -48,7 +48,7 @@ const Home: NextPage<Props> = ({ posts }: Props) => {
           name="body"
           className="block w-full resize-y bg-transparent outline-none"
           rows={3}
-          placeholder="Something Flashable..."
+          placeholder="Type Something Flashable..."
           onChange={(e) => {
             setFormBody(e.currentTarget.value);
           }}
@@ -58,7 +58,7 @@ const Home: NextPage<Props> = ({ posts }: Props) => {
         </button>
       </section>
       {/* 投稿一覧 */}
-      <div>
+      <section>
         {posts.map((post, postIdx) => {
           return (
             <div key={postIdx}>
@@ -68,7 +68,7 @@ const Home: NextPage<Props> = ({ posts }: Props) => {
             </div>
           );
         })}
-      </div>
+      </section>
       <div>
         <CodeArea>display: block;</CodeArea>
       </div>
