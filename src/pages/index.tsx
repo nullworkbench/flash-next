@@ -45,7 +45,7 @@ const Home: NextPage<Props> = ({ posts }: Props) => {
     // bodyを改行文字で区切る
     const splittedBody = body.split("\n");
     // コードが入ったインデックスを保存する配列
-    const codeIndexes: number[] = [];
+    const codeIndexes: { begin: number; size: number }[] = [];
     // コードの開始（@@@）を判定
     let isCodeHead = true;
     // コードが入っている場所を判定
@@ -53,27 +53,46 @@ const Home: NextPage<Props> = ({ posts }: Props) => {
       if (str.match("@@@")) {
         // 開始タグであればインデックスを保存
         if (isCodeHead) {
-          codeIndexes.push(strIdx + 1);
+          codeIndexes.push({ begin: strIdx + 1, size: 0 });
           isCodeHead = false;
         } else {
+          const v = codeIndexes[codeIndexes.length - 1];
+          v.size = strIdx - v.begin;
           isCodeHead = true;
         }
       }
     });
+    // スキップしてほしいカウント
+    let skipCount = 0;
     // CodeAreaを含むBody Elmentを構成
     const bodyElm = (
       <>
-        {splittedBody.map((b, idx) => {
+        {splittedBody.map((b, bIdx) => {
           // codeIndexesに含まれていればCodeArea
-          if (codeIndexes.includes(idx)) {
-            return <CodeArea key={idx}>{b}</CodeArea>;
+          for (let i = 0; i < codeIndexes.length; i++) {
+            const c = codeIndexes[i];
+            if (c.begin == bIdx) {
+              skipCount = c.size;
+              return (
+                <CodeArea key={bIdx}>
+                  {[...Array(c.size)].map((_, idx) => {
+                    return <>{splittedBody[bIdx + idx] + "\n"}</>;
+                  })}
+                </CodeArea>
+              );
+            }
+          }
+          // スキップカウント
+          if (skipCount > 0) {
+            skipCount--;
+            return;
           }
           // @@@はスキップ
           if (b.match("@@@")) return;
           // 空は改行
-          if (b.length == 0) return <br key={idx} />;
+          if (b.length == 0) return <br key={bIdx} />;
           // その他はそのまま出力
-          return <p key={idx}>{b}</p>;
+          return <p key={bIdx}>{b}</p>;
         })}
       </>
     );
