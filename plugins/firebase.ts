@@ -6,7 +6,6 @@ import {
   signInWithPopup,
   signOut,
 } from "firebase/auth";
-import useStaticSWR from "./useStaticSWR";
 
 const config = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -26,24 +25,27 @@ export const auth = getAuth();
 
 // auth
 const provider = new GoogleAuthProvider();
-export function signInWithGoogle() {
-  signInWithPopup(auth, provider)
+export function signInWithGoogle(): Promise<User | boolean> {
+  const res = signInWithPopup(auth, provider)
     .then((result) => {
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential?.accessToken;
       const u = result.user;
       const user: User = {
-        displayName: u.displayName!,
-        photoURL: u.photoURL!,
+        displayName: u.displayName ?? "名称未設定さん",
+        photoURL: u.photoURL ?? "",
         uid: u.uid,
       };
-      useStaticSWR("loginUser", user);
+      console.log("signIn successful");
+      return user;
     })
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
       console.log(`SignIn Error: ${errorCode}. ${errorMessage}`);
+      return false;
     });
+  return res;
 }
 export function signOutNow(): Promise<boolean> {
   const res = signOut(auth)

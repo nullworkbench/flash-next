@@ -17,21 +17,24 @@ const GlobalHeader: React.FC = () => {
   };
 
   // firebaseAuthの認証状態をリッスン
-  onAuthStateChanged(auth, (u) => {
-    if (u) {
-      const newUser: User = {
-        displayName: u.displayName ?? "名称未設定さん",
-        photoURL: u.photoURL ?? "",
-        uid: u.uid,
-      };
-      updateUser(newUser);
-    } else {
-      // Not signned in
-    }
-  });
+  // onAuthStateChanged(auth, (u) => {
+  //   if (u) {
+  //     const newUser: User = {
+  //       displayName: u.displayName ?? "名称未設定さん",
+  //       photoURL: u.photoURL ?? "",
+  //       uid: u.uid,
+  //     };
+  //     updateUser(newUser);
+  //   } else {
+  //     // Not signned in
+  //   }
+  // });
 
-  function signIn() {
-    signInWithGoogle();
+  async function signIn() {
+    const res = await signInWithGoogle();
+    if (res && res != true) {
+      updateUser(res);
+    }
   }
   async function signOut() {
     // signOutが正常に終了すればuserを空に

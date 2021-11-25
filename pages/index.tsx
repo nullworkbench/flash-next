@@ -1,10 +1,8 @@
 import type { NextPage, GetStaticProps } from "next";
 import styles from "../styles/Home.module.css";
 import CodeArea from "@/components/CodeArea";
-import { getRecentPosts } from "@/plugins/firestore";
+import { getRecentPosts, addPost } from "@/plugins/firestore";
 import { useState } from "react";
-import { db } from "@/plugins/firebase";
-import { Timestamp, addDoc, collection } from "firebase/firestore";
 
 type Props = {
   posts: Post[];
@@ -21,6 +19,15 @@ const Home: NextPage<Props> = ({ posts }: Props) => {
   // Formのbody
   const [formBody, setFormBody] = useState("");
 
+  async function post() {
+    const post = {
+      body: "bbb",
+    };
+    const docId = await addPost(post);
+
+    console.log(`Document added with ID: ${docId}`);
+  }
+
   return (
     <div className="container mx-auto">
       {/* 新規投稿 */}
@@ -33,16 +40,19 @@ const Home: NextPage<Props> = ({ posts }: Props) => {
         ></textarea>
         <button onClick={() => post()}>Post</button>
       </section>
-      {posts.map((post, postIdx) => {
-        return (
-          <div key={postIdx}>
-            <p>{post.body}</p>
-            <p>{post.userId}</p>
-            <p>{post.createdAt}</p>
-          </div>
-        );
-      })}
-      <div className={styles.container}>
+      {/* 投稿一覧 */}
+      <div>
+        {posts.map((post, postIdx) => {
+          return (
+            <div key={postIdx}>
+              <p>body: {post.body}</p>
+              <p>userId: {post.userId}</p>
+              <p>createdAt: {post.createdAt}</p>
+            </div>
+          );
+        })}
+      </div>
+      <div>
         <CodeArea>display: block;</CodeArea>
       </div>
     </div>
