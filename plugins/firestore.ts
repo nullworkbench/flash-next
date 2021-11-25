@@ -15,11 +15,14 @@ export async function getRecentPosts(num: number) {
   const posts: Post[] = [];
   querySnapshot.forEach((doc) => {
     const data = doc.data();
-    posts.push({
-      body: data.body,
-      userId: "aaa",
-      createdAt: data.createdAt.toDate().toLocaleString("ja-JP"), // 日本式の日付にフォーマット
-    });
+    // Post型に合わないdocは弾く
+    if (data.body && data.userId && data.createdAt) {
+      posts.push({
+        body: data.body,
+        userId: data.userId,
+        createdAt: data.createdAt.toDate().toLocaleString("ja-JP"), // 日本式の日付にフォーマット
+      });
+    }
   });
   return posts;
 }
