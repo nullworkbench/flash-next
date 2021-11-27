@@ -65,7 +65,7 @@ const Home: NextPage<Props> = ({ posts }: Props) => {
     // スキップしてほしいカウント
     let skipCount = 0;
     // CodeAreaを含むBody Elmentを構成
-    const bodyElm = (
+    return (
       <>
         {splittedBody.map((b, bIdx) => {
           // スキップカウント
@@ -96,8 +96,6 @@ const Home: NextPage<Props> = ({ posts }: Props) => {
         })}
       </>
     );
-
-    return bodyElm;
   }
 
   return (
