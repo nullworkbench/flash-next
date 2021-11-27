@@ -68,20 +68,6 @@ const Home: NextPage<Props> = ({ posts }: Props) => {
     const bodyElm = (
       <>
         {splittedBody.map((b, bIdx) => {
-          // codeIndexesに含まれていればCodeArea
-          for (let i = 0; i < codeIndexes.length; i++) {
-            const c = codeIndexes[i];
-            if (c.begin == bIdx) {
-              skipCount = c.size;
-              return (
-                <CodeArea key={bIdx}>
-                  {[...Array(c.size)].map((_, idx) => {
-                    return <>{splittedBody[bIdx + idx] + "\n"}</>;
-                  })}
-                </CodeArea>
-              );
-            }
-          }
           // スキップカウント
           if (skipCount > 0) {
             skipCount--;
@@ -91,6 +77,20 @@ const Home: NextPage<Props> = ({ posts }: Props) => {
           if (b.match("@@@")) return;
           // 空は改行
           if (b.length == 0) return <br key={bIdx} />;
+          // codeIndexesに含まれていればCodeArea
+          for (let i = 0; i < codeIndexes.length; i++) {
+            const c = codeIndexes[i];
+            if (c.begin == bIdx) {
+              skipCount = c.size;
+              return (
+                <CodeArea key={bIdx}>
+                  {[...Array(c.size)].map(
+                    (_, idx) => splittedBody[bIdx + idx] + "\n"
+                  )}
+                </CodeArea>
+              );
+            }
+          }
           // その他はそのまま出力
           return <p key={bIdx}>{b}</p>;
         })}
