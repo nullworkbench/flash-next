@@ -83,11 +83,12 @@ const Home: NextPage<Props> = ({ posts }: Props) => {
             if (c.begin == bIdx) {
               skipCount = c.size;
               return (
-                <CodeArea key={bIdx}>
-                  {[...Array(c.size)].map(
-                    (_, idx) => splittedBody[bIdx + idx] + "\n"
-                  )}
-                </CodeArea>
+                <CodeArea
+                  key={bIdx}
+                  code={[...Array(c.size)]
+                    .map((_, idx) => splittedBody[bIdx + idx] + "\n")
+                    .join("")}
+                />
               );
             }
           }

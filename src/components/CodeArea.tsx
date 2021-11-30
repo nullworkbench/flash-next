@@ -1,10 +1,12 @@
 import { FC, useEffect } from "react";
 // highlight.js
-import hljs from "highlight.js";
+import hljs from "highlight.js/lib/common";
 // highlight.jsのテーマ指定
 import "highlight.js/styles/vs2015.css";
 
-const CodeArea: FC = ({ children }) => {
+type Props = { code: string };
+
+const CodeArea: FC<Props> = ({ code }: Props) => {
   // mounted時にhljs実行
   useEffect(() => {
     hljs.highlightAll();
@@ -12,7 +14,7 @@ const CodeArea: FC = ({ children }) => {
   return (
     <pre className="py-2">
       <code className="font-code rounded-md" style={{ padding: "1.5rem 2rem" }}>
-        {children}
+        {code}
       </code>
     </pre>
   );
