@@ -122,7 +122,7 @@ const Home: NextPage<Props> = ({ posts }: Props) => {
           return (
             <div key={postIdx} className="nmp p-8 mb-16">
               <div>@{post.userId}</div>
-              <div className="my-4">{splitBody(post.body)}</div>
+              <div className="p-4 my-4">{splitBody(post.body)}</div>
               <div className="text-right text-gray-400">{post.createdAt}</div>
             </div>
           );
