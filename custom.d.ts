@@ -11,7 +11,9 @@ type User = {
 };
 
 type Post = {
+  docId: string;
   body: string;
+  like: number;
   userId: string;
   createdAt: string;
 };

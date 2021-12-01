@@ -1,6 +1,6 @@
 import type { NextPage, GetStaticProps } from "next";
 import CodeArea from "@/components/CodeArea";
-import { getRecentPosts, addPost } from "@/plugins/firestore";
+import { getRecentPosts, addPost, likePost } from "@/plugins/firestore";
 import { useUserInfo } from "@/stores/contexts";
 import { useState } from "react";
 import Icon from "@/components/Icon";
@@ -38,6 +38,12 @@ const Home: NextPage<Props> = ({ posts }: Props) => {
     } else {
       alert("Please login first.");
     }
+  }
+
+  // いいね
+  async function likePost(docId: string) {
+    const res = likePost(docId);
+    if (!res) console.log("Error liking post");
   }
 
   // bodyをJSX.Elementに整形
@@ -124,8 +130,12 @@ const Home: NextPage<Props> = ({ posts }: Props) => {
               <div>@{post.userId}</div>
               <div className="px-4 my-4">{splitBody(post.body)}</div>
               <div className="flex justify-between px-4">
-                <div>
+                <div
+                  onClick={() => likePost(post.docId)}
+                  className="flex items-center"
+                >
                   <Icon type="Fire" size={24} fill="#c7c7c7" />
+                  <span className="pl-3 pt-1">{post.like}</span>
                 </div>
                 <div className="text-right text-gray-400">{post.createdAt}</div>
               </div>
