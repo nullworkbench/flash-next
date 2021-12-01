@@ -1,8 +1,11 @@
 // Icon svgs
 import FlashLogo from "./Icon/FlashLogo";
+import Fire from "./Icon/Fire";
+import { CSSProperties } from "react";
 
 export const IconTypes = {
   FlashLogo,
+  Fire,
 };
 type IconType = keyof typeof IconTypes;
 
@@ -11,10 +14,11 @@ interface IconProps {
   size?: number;
   maxHeight?: number;
   fill?: string;
+  style?: CSSProperties;
 }
 
 const Icon: React.FC<IconProps> = (props) => {
-  const { type, size, maxHeight, fill } = props;
+  const { type, size, maxHeight, fill, style } = props;
   const IconSvgFile = IconTypes[type as IconType];
 
   return (
@@ -23,6 +27,7 @@ const Icon: React.FC<IconProps> = (props) => {
         width: size ? size + "px" : "100%",
         maxHeight: maxHeight ? maxHeight + "px" : "none",
         fill: fill ? fill : "",
+        ...style,
       }}
     />
   );

@@ -1,9 +1,9 @@
 import type { NextPage, GetStaticProps } from "next";
-import styles from "../styles/Home.module.css";
 import CodeArea from "@/components/CodeArea";
 import { getRecentPosts, addPost } from "@/plugins/firestore";
 import { useUserInfo } from "@/stores/contexts";
 import { useState } from "react";
+import Icon from "@/components/Icon";
 
 type Props = {
   posts: Post[];
@@ -122,8 +122,13 @@ const Home: NextPage<Props> = ({ posts }: Props) => {
           return (
             <div key={postIdx} className="nmp p-8 mb-16">
               <div>@{post.userId}</div>
-              <div className="p-4 my-4">{splitBody(post.body)}</div>
-              <div className="text-right text-gray-400">{post.createdAt}</div>
+              <div className="px-4 my-4">{splitBody(post.body)}</div>
+              <div className="flex justify-between px-4">
+                <div>
+                  <Icon type="Fire" size={24} fill="#c7c7c7" />
+                </div>
+                <div className="text-right text-gray-400">{post.createdAt}</div>
+              </div>
             </div>
           );
         })}
