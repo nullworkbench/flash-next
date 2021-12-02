@@ -138,7 +138,15 @@ const Home: NextPage<Props> = ({ posts }: Props) => {
                   onClick={() => like(post.docId)}
                   className="flex items-center"
                 >
-                  <Icon type="Fire" size={24} fill="#c7c7c7" />
+                  <Icon
+                    type="Fire"
+                    size={24}
+                    fill={
+                      post.likes.find((like) => like.userId == userInfo?.uid)
+                        ? "#ef4c5f"
+                        : "#c7c7c7"
+                    }
+                  />
                   <span className="pl-3 pt-1">{post.likes.length}</span>
                 </div>
                 <div className="text-right text-gray-400">{post.createdAt}</div>
