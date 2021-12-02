@@ -42,8 +42,12 @@ const Home: NextPage<Props> = ({ posts }: Props) => {
 
   // いいね
   async function like(docId: string) {
-    const res = likePost(docId);
-    if (!res) console.log("Error liking post");
+    if (userInfo) {
+      const res = likePost(docId, userInfo.uid);
+      if (!res) console.log("Error liking post");
+    } else {
+      alert("Please login first.");
+    }
   }
 
   // bodyをJSX.Elementに整形

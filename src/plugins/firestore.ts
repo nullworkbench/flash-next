@@ -13,6 +13,7 @@ import {
   QueryDocumentSnapshot,
 } from "firebase/firestore";
 import { db } from "./firebase";
+import { useUserInfo } from "@/stores/contexts";
 
 async function getLikes(docId: string): Promise<Like[]> {
   // docIdのサブコレクションlikes
@@ -90,23 +91,15 @@ export async function addPost(args: {
 }
 
 // いいね関数
-export async function likePost(docId: string): Promise<boolean> {
-  // 現在の値を取得する
-  const docRef = doc(db, "posts", docId);
-  const docSnap = await getDoc(docRef);
-  if (docSnap.exists()) {
-    const data = docSnap.data();
-    const res = await updateDoc(docRef, { like: data.like + 1 })
-      .then(() => {
-        return true;
-      })
-      .catch((err) => {
-        console.log(err);
-        return false;
-      });
-    return res;
-  } else {
-    // エラー
-    return false;
-  }
+export async function likePost(docId: string, uid: string): Promise<boolean> {
+  // いいねオブジェクト作成
+  const likeObj = { userId: uid, createdAt: Timestamp.now() };
+  // 対象のドキュメントのlikesコレクションに追加
+  const res = await addDoc(collection(db, `posts/${docId}/likes`), likeObj)
+    .then((docRef) => true)
+    .catch((err) => {
+      console.log(err);
+      return false;
+    });
+  return res;
 }
