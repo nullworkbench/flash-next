@@ -10,10 +10,15 @@ type User = {
   uid: string;
 };
 
+type Like = {
+  userId: string;
+  createdAt: Date;
+};
+
 type Post = {
   docId: string;
   body: string;
-  like: number;
+  likes: Like[];
   userId: string;
   createdAt: string;
 };

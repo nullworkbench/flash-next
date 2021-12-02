@@ -12,7 +12,7 @@ type Props = {
 export const getStaticProps: GetStaticProps = async () => {
   // 最新の投稿10件を取得
   const posts = await getRecentPosts(10);
-
+  console.log(posts);
   return { props: { posts } };
 };
 
@@ -41,7 +41,7 @@ const Home: NextPage<Props> = ({ posts }: Props) => {
   }
 
   // いいね
-  async function likePost(docId: string) {
+  async function like(docId: string) {
     const res = likePost(docId);
     if (!res) console.log("Error liking post");
   }
@@ -131,11 +131,11 @@ const Home: NextPage<Props> = ({ posts }: Props) => {
               <div className="px-4 my-4">{splitBody(post.body)}</div>
               <div className="flex justify-between px-4">
                 <div
-                  onClick={() => likePost(post.docId)}
+                  onClick={() => like(post.docId)}
                   className="flex items-center"
                 >
                   <Icon type="Fire" size={24} fill="#c7c7c7" />
-                  <span className="pl-3 pt-1">{post.like}</span>
+                  <span className="pl-3 pt-1">{post.likes.length}</span>
                 </div>
                 <div className="text-right text-gray-400">{post.createdAt}</div>
               </div>
