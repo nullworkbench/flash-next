@@ -75,7 +75,6 @@ const Home: NextPage<Props> = ({ initialPosts }: Props) => {
           console.log("Error liking post");
         }
       }
-      console.log(posts[idx].likes);
     } else {
       alert("Please login first.");
     }
