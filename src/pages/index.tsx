@@ -42,9 +42,9 @@ const Home: NextPage<Props> = ({ initialPosts }: Props) => {
       if (docId) {
         // 投稿成功
         console.log(`Document added with ID: ${docId}`);
-        // 投稿したPostを取得してローカルのpostsに追加
-        const addedPost = await getPostFromID(docId as string);
-        if (addedPost) setPosts([addedPost as Post, ...posts]);
+        // 投稿一覧を更新
+        const refreshedPost = await getRecentPosts(10);
+        setPosts([...refreshedPost]);
         // formのtextareaをクリア
         setFormBody("");
       } else {
