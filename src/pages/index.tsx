@@ -11,17 +11,18 @@ import { useState } from "react";
 import Icon from "@/components/Icon";
 
 type Props = {
-  posts: Post[];
+  initialPosts: Post[];
 };
 
 export const getStaticProps: GetStaticProps = async () => {
   // 最新の投稿10件を取得
   const posts = await getRecentPosts(10);
-  console.log(posts);
-  return { props: { posts } };
+  return { props: { initialPosts: posts } };
 };
 
-const Home: NextPage<Props> = ({ posts }: Props) => {
+const Home: NextPage<Props> = ({ initialPosts }: Props) => {
+  // 投稿情報
+  const [posts, setPosts] = useState(initialPosts);
   // ユーザー情報
   const { data: userInfo } = useUserInfo();
   // Formのbody
@@ -54,9 +55,11 @@ const Home: NextPage<Props> = ({ posts }: Props) => {
         const res = await unlikePost(docId, uid);
         if (res) {
           // uidが一致するオブジェクトを全て取り除く
-          posts[idx].likes = posts[idx].likes.filter(
+          const filteredPosts = posts;
+          filteredPosts[idx].likes = filteredPosts[idx].likes.filter(
             (like) => like.userId != uid
           );
+          setPosts([...filteredPosts]);
         } else {
           console.log("Error unliking post");
         }
@@ -65,7 +68,9 @@ const Home: NextPage<Props> = ({ posts }: Props) => {
         const res = await likePost(docId, uid);
         if (res) {
           // いいねオブジェクトの追加
-          posts[idx].likes.push({ userId: uid, createdAt: new Date() });
+          const newPosts = posts;
+          newPosts[idx].likes.push({ userId: uid, createdAt: new Date() });
+          setPosts([...newPosts]);
         } else {
           console.log("Error liking post");
         }
