@@ -1,12 +1,24 @@
 import { Children, useState } from "react";
+import Router from "next/router";
 import Icon from "./Icon";
+import { deletePost } from "@/plugins/firestore";
+import Modal from "@/components/Modal";
 
-const PopupMenu: React.FC = () => {
+type Props = {
+  docId: string;
+};
+
+const PopupMenu: React.FC<Props> = ({ docId }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const MenuItem: React.FC = ({ children }) => {
     return <div className="px-2 py-1">{children}</div>;
   };
+
+  async function deleteBtn() {
+    const res = await deletePost(docId);
+    Router.reload();
+  }
 
   return (
     <div>
@@ -27,7 +39,9 @@ const PopupMenu: React.FC = () => {
         <div className="text-right px-2 py-1" onClick={() => setIsOpen(false)}>
           &times;
         </div>
-        <MenuItem>Delete</MenuItem>
+        <div onClick={() => deleteBtn()}>
+          <MenuItem>Delete</MenuItem>
+        </div>
       </div>
     </div>
   );

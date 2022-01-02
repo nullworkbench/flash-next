@@ -189,7 +189,7 @@ const Home: NextPage<Props> = ({ initialPosts }: Props) => {
               <div className="flex justify-between">
                 <div>@{post.userId}</div>
                 <div>
-                  <PopupMenu />
+                  <PopupMenu docId={post.docId} />
                 </div>
               </div>
               <div className="px-4 my-4 sp:px-0">{splitBody(post.body)}</div>

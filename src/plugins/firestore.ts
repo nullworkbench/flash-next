@@ -14,7 +14,6 @@ import {
   QueryDocumentSnapshot,
 } from "firebase/firestore";
 import { db } from "./firebase";
-import { useUserInfo } from "@/stores/contexts";
 
 // doc.data()からPost型のオブジェクトに変換
 async function makePostFromDocData(
@@ -109,6 +108,11 @@ export async function addPost(args: {
       return false;
     });
   return res;
+}
+
+// 投稿を削除する関数
+export async function deletePost(docId: string): Promise<void> {
+  await deleteDoc(doc(db, "posts", docId));
 }
 
 // いいね関数
