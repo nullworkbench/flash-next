@@ -8,8 +8,9 @@ import {
   getPostFromID,
 } from "@/plugins/firestore";
 import { useUserInfo } from "@/stores/contexts";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Icon from "@/components/Icon";
+import PopupMenu from "@/components/PopupMenu";
 
 type Props = {
   initialPosts: Post[];
@@ -182,13 +183,13 @@ const Home: NextPage<Props> = ({ initialPosts }: Props) => {
           return (
             <div
               key={postIdx}
-              className="nmp mx-auto p-8 mb-16 sp:p-6 sp:mb-8"
+              className="nmp relative mx-auto p-8 mb-16 sp:p-6 sp:mb-8"
               style={{ width: "95%" }}
             >
               <div className="flex justify-between">
                 <div>@{post.userId}</div>
                 <div>
-                  <Icon type="Other" fill="#c7c7c7" />
+                  <PopupMenu />
                 </div>
               </div>
               <div className="px-4 my-4 sp:px-0">{splitBody(post.body)}</div>
