@@ -5,6 +5,7 @@ import {
   addPost,
   likePost,
   unlikePost,
+  getPostFromID,
 } from "@/plugins/firestore";
 import { useUserInfo } from "@/stores/contexts";
 import { useState } from "react";
@@ -38,9 +39,18 @@ const Home: NextPage<Props> = ({ initialPosts }: Props) => {
       };
       const docId = await addPost(post);
 
-      docId
-        ? console.log(`Document added with ID: ${docId}`)
-        : console.log("Unable to add Document.");
+      if (docId) {
+        // 投稿成功
+        console.log(`Document added with ID: ${docId}`);
+        // 投稿したPostを取得してローカルのpostsに追加
+        const addedPost = await getPostFromID(docId as string);
+        if (addedPost) setPosts([addedPost as Post, ...posts]);
+        // formのtextareaをクリア
+        setFormBody("");
+      } else {
+        // 投稿失敗
+        console.log("Unable to add Document.");
+      }
     } else {
       alert("Please login first.");
     }
@@ -148,6 +158,7 @@ const Home: NextPage<Props> = ({ initialPosts }: Props) => {
           className="block w-full resize-y bg-transparent outline-none"
           rows={3}
           placeholder="Type Something Flashable..."
+          value={formBody}
           onChange={(e) => {
             setFormBody(e.currentTarget.value);
           }}

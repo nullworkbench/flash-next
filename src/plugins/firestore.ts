@@ -15,7 +15,25 @@ import {
 } from "firebase/firestore";
 import { db } from "./firebase";
 import { useUserInfo } from "@/stores/contexts";
-import { async } from "@firebase/util";
+
+// doc.data()からPost型のオブジェクトに変換
+async function makePostFromDocData(
+  docId: string,
+  data: DocumentData
+): Promise<Post> {
+  // dataから取得
+  const { body, userId, createdAt } = data;
+  const likes = await getLikes(docId);
+  // 配列に追加
+  const post: Post = {
+    docId,
+    body,
+    likes,
+    userId,
+    createdAt: createdAt.toDate().toLocaleString("ja-JP"), // 日本式の日付にフォーマット
+  };
+  return post;
+}
 
 async function getLikes(docId: string): Promise<Like[]> {
   // docIdのサブコレクションlikes
@@ -60,21 +78,22 @@ export async function getRecentPosts(num: number): Promise<Post[]> {
     const data = snapshot.data();
     // Post型に合わないdocは弾く
     if (data.body && data.userId && data.createdAt) {
-      // dataから取得
-      const { body, userId, createdAt } = data;
-      const likes = await getLikes(snapshot.id);
-      // 配列に追加
-      const post: Post = {
-        docId: snapshot.id,
-        body,
-        likes,
-        userId,
-        createdAt: createdAt.toDate().toLocaleString("ja-JP"), // 日本式の日付にフォーマット
-      };
+      const post = await makePostFromDocData(snapshot.id, data);
       posts.push(post);
     }
   }
   return posts;
+}
+
+// docIDから投稿を取得
+export async function getPostFromID(id: string): Promise<Post | boolean> {
+  const docRef = doc(db, "posts", id);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    const post = makePostFromDocData(docSnap.id, docSnap.data());
+    return post;
+  }
+  return false;
 }
 
 // firestoreへ新規投稿を行う関数
