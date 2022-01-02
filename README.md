@@ -13,17 +13,15 @@ You can share your any codes, solutions, or tips like tweeting.
 If you surround code with `@@@`, Flash will automatically syntax highlight your codes.
 
 If you write like this,
-- - - 
-@@@<br>
-display: block;<br>
-@@@
-- - -
-Flash will show your codes like this
-- - -
 ```
+@@@
+display: block;
+@@@
+```
+Flash will show your codes like this
+```css
 display: block;
 ```
-- - -
 
 
 
