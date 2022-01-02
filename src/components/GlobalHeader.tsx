@@ -47,7 +47,10 @@ const GlobalHeader: React.FC = () => {
   }
 
   return (
-    <header className="nmp flex justify-between w-11/12 mx-auto p-4 px-8 mt-8">
+    <header
+      className="nmp flex justify-between mx-auto p-4 px-8 mt-8 sp:px-5"
+      style={{ width: "95%" }}
+    >
       <div></div>
       <div className="absolute left-1/2 transform -translate-x-1/2 w-5 filter drop-shadow-lg">
         <Icon type="FlashLogo" />
