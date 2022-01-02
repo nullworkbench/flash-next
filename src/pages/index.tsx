@@ -152,29 +152,41 @@ const Home: NextPage<Props> = ({ initialPosts }: Props) => {
   return (
     <div className="container mx-auto">
       {/* 新規投稿 */}
-      <section className="nmp p-8 max-w-lg mx-auto">
-        <textarea
-          name="body"
-          className="block w-full resize-y bg-transparent outline-none"
-          rows={3}
-          placeholder="Type Something Flashable..."
-          value={formBody}
-          onChange={(e) => {
-            setFormBody(e.currentTarget.value);
-          }}
-        ></textarea>
-        <button className="block ml-auto mr-0" onClick={() => post()}>
-          Post
-        </button>
+      <section>
+        <h3 className="text-center text-2xl font-semibold mb-6">
+          Share your Flash
+        </h3>
+        <div className="nmp p-8 max-w-lg mx-auto">
+          <textarea
+            name="body"
+            className="block w-full resize-y bg-transparent outline-none"
+            rows={3}
+            placeholder="Type Something Flashable..."
+            value={formBody}
+            onChange={(e) => {
+              setFormBody(e.currentTarget.value);
+            }}
+          ></textarea>
+          <button className="block ml-auto mr-0" onClick={() => post()}>
+            Post
+          </button>
+        </div>
       </section>
       {/* 投稿一覧 */}
       <section>
+        <h3 className="text-center text-2xl font-semibold mb-6">
+          Recent Flashes
+        </h3>
         {posts.map((post, postIdx) => {
           return (
-            <div key={postIdx} className="nmp p-8 mb-16">
+            <div
+              key={postIdx}
+              className="nmp mx-auto p-8 mb-16 sp:p-6 sp:mb-8"
+              style={{ width: "95%" }}
+            >
               <div>@{post.userId}</div>
-              <div className="px-4 my-4">{splitBody(post.body)}</div>
-              <div className="flex justify-between px-4">
+              <div className="px-4 my-4 sp:px-0">{splitBody(post.body)}</div>
+              <div className="flex justify-between px-4 sp:px-0">
                 <div
                   onClick={() => like(post.docId, postIdx)}
                   className="flex items-center"
