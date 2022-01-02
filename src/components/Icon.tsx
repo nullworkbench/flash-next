@@ -1,11 +1,13 @@
 // Icon svgs
 import FlashLogo from "./Icon/FlashLogo";
 import Fire from "./Icon/Fire";
+import Other from "./Icon/Other";
 import { CSSProperties } from "react";
 
 export const IconTypes = {
   FlashLogo,
   Fire,
+  Other,
 };
 type IconType = keyof typeof IconTypes;
 

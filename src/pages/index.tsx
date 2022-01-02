@@ -172,6 +172,7 @@ const Home: NextPage<Props> = ({ initialPosts }: Props) => {
           </button>
         </div>
       </section>
+
       {/* 投稿一覧 */}
       <section>
         <h3 className="text-center text-2xl font-semibold mb-6">
@@ -184,7 +185,12 @@ const Home: NextPage<Props> = ({ initialPosts }: Props) => {
               className="nmp mx-auto p-8 mb-16 sp:p-6 sp:mb-8"
               style={{ width: "95%" }}
             >
-              <div>@{post.userId}</div>
+              <div className="flex justify-between">
+                <div>@{post.userId}</div>
+                <div>
+                  <Icon type="Other" fill="#c7c7c7" />
+                </div>
+              </div>
               <div className="px-4 my-4 sp:px-0">{splitBody(post.body)}</div>
               <div className="flex justify-between px-4 sp:px-0">
                 <div
