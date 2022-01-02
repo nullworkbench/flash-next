@@ -6,14 +6,16 @@ import {
   limit,
   orderBy,
   query,
+  where,
   Timestamp,
   addDoc,
-  updateDoc,
+  deleteDoc,
   DocumentData,
   QueryDocumentSnapshot,
 } from "firebase/firestore";
 import { db } from "./firebase";
 import { useUserInfo } from "@/stores/contexts";
+import { async } from "@firebase/util";
 
 async function getLikes(docId: string): Promise<Like[]> {
   // docIdのサブコレクションlikes
@@ -102,4 +104,36 @@ export async function likePost(docId: string, uid: string): Promise<boolean> {
       return false;
     });
   return res;
+}
+
+// いいね解除関数
+export async function unlikePost(
+  postId: string,
+  uid: string
+): Promise<boolean> {
+  // いいねオブジェクトのdocIdを特定
+  const q = query(
+    collection(db, `posts/${postId}/likes`),
+    where("userId", "==", uid)
+  );
+  const querySnapshot = await getDocs(q);
+  const snapshots: QueryDocumentSnapshot<DocumentData>[] = [];
+  querySnapshot.forEach(async (d) => {
+    snapshots.push(d);
+  });
+  const a = async () => {
+    for (const snapshot of snapshots) {
+      const res = await deleteDoc(
+        doc(db, "posts", `${postId}/likes/${snapshot.id}`)
+      )
+        .then(() => true)
+        .catch((err) => {
+          console.log(err);
+          return false;
+        });
+      return res;
+    }
+    return false;
+  };
+  return a();
 }

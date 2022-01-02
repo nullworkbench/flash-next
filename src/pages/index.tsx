@@ -1,6 +1,11 @@
 import type { NextPage, GetStaticProps } from "next";
 import CodeArea from "@/components/CodeArea";
-import { getRecentPosts, addPost, likePost } from "@/plugins/firestore";
+import {
+  getRecentPosts,
+  addPost,
+  likePost,
+  unlikePost,
+} from "@/plugins/firestore";
 import { useUserInfo } from "@/stores/contexts";
 import { useState } from "react";
 import Icon from "@/components/Icon";
@@ -41,10 +46,31 @@ const Home: NextPage<Props> = ({ posts }: Props) => {
   }
 
   // いいね
-  async function like(docId: string) {
+  async function like(docId: string, idx: number) {
     if (userInfo) {
-      const res = likePost(docId, userInfo.uid);
-      if (!res) console.log("Error liking post");
+      const uid = userInfo.uid;
+      // いいね済み
+      if (posts[idx].likes.find((like) => like.userId == uid)) {
+        const res = await unlikePost(docId, uid);
+        if (res) {
+          // uidが一致するオブジェクトを全て取り除く
+          posts[idx].likes = posts[idx].likes.filter(
+            (like) => like.userId != uid
+          );
+        } else {
+          console.log("Error unliking post");
+        }
+      } else {
+        // 未いいね
+        const res = await likePost(docId, uid);
+        if (res) {
+          // いいねオブジェクトの追加
+          posts[idx].likes.push({ userId: uid, createdAt: new Date() });
+        } else {
+          console.log("Error liking post");
+        }
+      }
+      console.log(posts[idx].likes);
     } else {
       alert("Please login first.");
     }
@@ -135,7 +161,7 @@ const Home: NextPage<Props> = ({ posts }: Props) => {
               <div className="px-4 my-4">{splitBody(post.body)}</div>
               <div className="flex justify-between px-4">
                 <div
-                  onClick={() => like(post.docId)}
+                  onClick={() => like(post.docId, postIdx)}
                   className="flex items-center"
                 >
                   <Icon
