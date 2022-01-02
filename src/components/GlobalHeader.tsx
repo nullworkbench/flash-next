@@ -48,7 +48,7 @@ const GlobalHeader: React.FC = () => {
 
   return (
     <header
-      className="nmp flex justify-between mx-auto p-4 px-8 mt-8 sp:px-5"
+      className="nmp sticky top-4 flex justify-between mx-auto p-4 px-8 mt-8 sp:px-5"
       style={{ width: "95%" }}
     >
       <div></div>
