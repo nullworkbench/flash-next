@@ -30,3 +30,10 @@ display: block;
 Sharing your solutions(code) will help anyone who facing the same problem.
 
 Share the code with Flash!
+
+
+## Developed with
+- Next.js
+- Firebase Auth
+- Firestore
+- SWR
