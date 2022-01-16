@@ -1,5 +1,6 @@
 import { NextPage } from "next";
 import Link from "next/link";
+import CodeArea from "@/components/CodeArea";
 
 const About: NextPage = () => {
   return (
@@ -58,19 +59,26 @@ const About: NextPage = () => {
         </p>
         <p>
           <ol className="list-decimal pl-8">
-            <li>Copy the code.</li>
-            <li>
-              Paste to Flash.{" "}
+            <li className="mb-2">Copy the code.</li>
+            <li className="mb-2">
+              Paste to Flash. And surround code with @. Flash will autmatially
+              syntax highlight your code.
+              <div>
+                <p>
+                  Ex) If you write like this{" "}
+                  <span className="px-2 py-1 text-sm bg-gray-300">
+                    <code>@@@ display: block; @@@</code>
+                  </span>
+                </p>
+                <p>Flash will show as like this</p>
+                <CodeArea code={"display: block;"} />
+              </div>
               <span className="text-gray-500">
-                (optional: Write descriptions.)
+                (optional: In addition, please write descriptions.)
               </span>
             </li>
             <li>Post it.</li>
           </ol>
-        </p>
-        <p>
-          You can write descriptions with code, but it is not nessesary if you
-          mind. The important thing is do not stop your coding.
         </p>
         <p>Just posting it, your code will help someone in the world ;)</p>
       </section>
@@ -83,7 +91,7 @@ const About: NextPage = () => {
           </a>
         </Link>
       </section>
-      <section></section>
+      <div style={{ paddingBottom: "20rem" }}></div>
       <style jsx>{`
         p {
           margin-bottom: 0.5rem;
