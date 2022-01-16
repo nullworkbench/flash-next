@@ -38,7 +38,7 @@ const PopupMenu: React.FC<Props> = ({ docId }) => {
         <Icon type="Other" fill="#44476a" />
       </div>
       <div
-        className="nmp absolute top-3 right-3 grid grid-cols-1 divide-y divide-gray-300 px-2 py-1"
+        className="nmp absolute z-10 top-3 right-3 grid grid-cols-1 divide-y divide-gray-300 px-2 py-1"
         style={{
           opacity: isOpen ? 1 : 0,
           visibility: isOpen ? "visible" : "hidden",
