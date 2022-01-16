@@ -4,10 +4,10 @@ import CodeArea from "@/components/CodeArea";
 
 const About: NextPage = () => {
   return (
-    <div className="container mx-auto max-w-3xl">
+    <div className="container mx-auto max-w-3xl w-11/12">
       {/* ヒーロー */}
       <section className="mb-24">
-        <h2 className="text-8xl font-bold">
+        <h2 className="text-8xl font-bold sp:text-7xl">
           Extremely Easy Code Sharing Network.
         </h2>
       </section>
