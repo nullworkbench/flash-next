@@ -29,7 +29,11 @@ const PopupMenu: React.FC<Props> = ({ docId }) => {
 
   return (
     <div>
-      <div className="p-0.5 pr-0" onClick={() => setIsOpen(true)}>
+      <div
+        className="p-0.5 pr-0"
+        style={{ width: "1.5rem" }}
+        onClick={() => setIsOpen(true)}
+      >
         <Icon type="Other" fill="#44476a" />
       </div>
       <div
@@ -54,20 +58,20 @@ const PopupMenu: React.FC<Props> = ({ docId }) => {
         closeModal={() => setDeleteModalIsOpen(false)}
       >
         <div className="p-3">
-          <p>本当に削除しますか？</p>
+          <p>Are you sure want to delete?</p>
         </div>
         <div className="flex justify-end mt-4">
           <button
             className="px-4 py-2 mr-4 text-sm bg-gray-300 rounded-md focus:outline-none"
             onClick={() => setDeleteModalIsOpen(false)}
           >
-            キャンセル
+            Cancel
           </button>
           <button
             className="px-4 py-2 text-white text-sm bg-red-400 rounded-md focus:outline-none"
             onClick={() => deleteBtn()}
           >
-            削除する
+            Delete
           </button>
         </div>
       </Modal>

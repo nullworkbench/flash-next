@@ -11,7 +11,7 @@ const Modal: React.FC<Props> = ({ children, isOpen, closeModal }) => {
     <>
       {isOpen ? (
         //   画面全体の黒背景
-        <div className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-20">
+        <div className="fixed z-50 top-0 left-0 w-screen h-screen bg-black bg-opacity-20">
           {/* モーダル外クリックで閉じる */}
           <div
             className="absolute top-0 left-0 w-full h-full"
