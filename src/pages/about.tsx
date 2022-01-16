@@ -91,7 +91,7 @@ const About: NextPage = () => {
           </a>
         </Link>
       </section>
-      <div style={{ paddingBottom: "20rem" }}></div>
+      <div style={{ paddingBottom: "10rem" }}></div>
       <style jsx>{`
         p {
           margin-bottom: 0.5rem;
