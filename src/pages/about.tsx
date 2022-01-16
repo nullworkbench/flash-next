@@ -1,9 +1,94 @@
 import { NextPage } from "next";
+import Link from "next/link";
 
 const About: NextPage = () => {
   return (
-    <div className="container mx-auto">
-      <h2>Flashとは</h2>
+    <div className="container mx-auto max-w-3xl">
+      {/* ヒーロー */}
+      <section className="mb-24">
+        <h2 className="text-8xl font-bold">
+          Extremely Easy Code Sharing Network.
+        </h2>
+      </section>
+      {/* Flashとは */}
+      <section>
+        <h2 className="text-4xl font-bold mb-4">What is Flash?</h2>
+        <p>
+          Flash is a <strong>Extremely Easy Code Sharing Network</strong>.
+        </p>
+        <p>
+          Share your favorite functions, solutions, or something useful to
+          anyone who learning programming at any languages.
+          <span className="block text-gray-500 mt-2">
+            e.g. JavaScirpt, Swift, Ruby, C, Rust and more...
+          </span>
+        </p>
+      </section>
+      {/* ミッション */}
+      <section>
+        <h2 className="text-4xl font-bold mb-3">Our Misson</h2>
+        <p className="text-xl pb-2">
+          &ldquo; To be all developvers around world can share the code within{" "}
+          <span className="text-2xl font-semibold">1 minute</span>. &rdquo;
+        </p>
+        <p>
+          In nowadays, we can find solutions of almost problems in the internet
+          when we faced to problems or issues. But sometims, we can&apos;t find
+          the solution or originally there is no search results. Because most of
+          developers don&apos;t write about solution to blogs or websites.
+          Blogging is a good way of sharing code. But writing it will takes
+          time. This is why they don&apos;t write blogs.
+        </p>
+        <p>
+          Getting over this problem is <strong>why Flash was born</strong>.
+        </p>
+        <p>
+          Flash is easy to use and it will help developers to share any
+          solutions to everyone who facing same problem.
+        </p>
+      </section>
+      {/* 使い方 */}
+      <section>
+        <h2 className="text-4xl font-bold mb-4">How to use it</h2>
+        <p>
+          When you&apos;ve found a solution that isn&apos;t in the search
+          results yet, <strong>copy the working code</strong>. Then{" "}
+          <strong>paste it to Flash</strong>, and <strong>Post</strong>.
+          That&apos;s it.
+        </p>
+        <p>
+          <ol className="list-decimal pl-8">
+            <li>Copy the code.</li>
+            <li>
+              Paste to Flash.{" "}
+              <span className="text-gray-500">
+                (optional: Write descriptions.)
+              </span>
+            </li>
+            <li>Post it.</li>
+          </ol>
+        </p>
+        <p>
+          You can write descriptions with code, but it is not nessesary if you
+          mind. The important thing is do not stop your coding.
+        </p>
+        <p>Just posting it, your code will help someone in the world ;)</p>
+      </section>
+      {/* 投稿への誘導 */}
+      <section>
+        <h2 className="text-4xl font-bold mb-8">Let&apos;s Flash it!</h2>
+        <Link href={"/"} passHref>
+          <a className="px-20 py-4 bg-yellow-300 rounded-md focus:outline-none">
+            Start using Flash
+          </a>
+        </Link>
+      </section>
+      <section></section>
+      <style jsx>{`
+        p {
+          margin-bottom: 0.5rem;
+        }
+      `}</style>
     </div>
   );
 };
