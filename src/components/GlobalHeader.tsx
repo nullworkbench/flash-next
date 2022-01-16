@@ -1,6 +1,7 @@
 import { auth, signInWithGoogle, signOutNow } from "@/plugins/firebase";
 import { onAuthStateChanged } from "@firebase/auth";
 import { useUserInfo } from "@/stores/contexts";
+import Link from "next/link";
 import Icon from "./Icon";
 import Modal from "./Modal";
 import { useState } from "react";
@@ -48,12 +49,22 @@ const GlobalHeader: React.FC = () => {
 
   return (
     <header
-      className="nmp sticky z-50 top-4 flex justify-between mx-auto p-4 px-8 mt-8 sp:px-5"
+      className="nmp sticky z-50 top-4 flex justify-between items-center mx-auto p-4 px-8 mt-8 sp:px-5"
       style={{ width: "95%" }}
     >
-      <div></div>
+      <div>
+        <Link href="/about" passHref>
+          <a className="text-gray-400 hover:text-blue-400 transition-colors">
+            What&apos;s Flash?
+          </a>
+        </Link>
+      </div>
       <div className="absolute left-1/2 transform -translate-x-1/2 w-5 filter drop-shadow-lg">
-        <Icon type="FlashLogo" />
+        <Link href="/" passHref>
+          <a>
+            <Icon type="FlashLogo" />
+          </a>
+        </Link>
       </div>
       {/* User */}
 
