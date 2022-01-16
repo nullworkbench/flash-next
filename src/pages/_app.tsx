@@ -11,6 +11,8 @@ function App({ Component, pageProps }: AppProps) {
       <Head>
         {/* クローラー拒否 */}
         <meta name="robots" content="noindex" />
+        {/* タイトル */}
+        <title>Flash</title>
       </Head>
       <div className="font-jp">
         <GlobalHeader />
