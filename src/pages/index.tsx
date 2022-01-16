@@ -196,7 +196,7 @@ const Home: NextPage<Props> = ({ initialPosts }: Props) => {
               <div className="flex justify-between px-4 sp:px-0">
                 <div
                   onClick={() => like(post.docId, postIdx)}
-                  className="flex items-center"
+                  className="flex items-center cursor-pointer"
                 >
                   <Icon
                     type="Fire"

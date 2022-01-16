@@ -12,6 +12,7 @@ type Props = {
 // Menuの各ボタンのスタイル
 const MenuItem = styled.div`
   padding: 0.5rem 1rem;
+  cursor: pointer;
 `;
 
 const PopupMenu: React.FC<Props> = ({ docId }) => {
@@ -30,7 +31,7 @@ const PopupMenu: React.FC<Props> = ({ docId }) => {
   return (
     <div>
       <div
-        className="p-0.5 pr-0"
+        className="p-0.5 pr-0 cursor-pointer"
         style={{ width: "1.5rem" }}
         onClick={() => setIsOpen(true)}
       >
@@ -47,7 +48,10 @@ const PopupMenu: React.FC<Props> = ({ docId }) => {
           transitionDuration: "0.2s, 0.5s, 0.5s",
         }}
       >
-        <div className="text-right px-2 py-1" onClick={() => setIsOpen(false)}>
+        <div
+          className="text-right px-2 py-1 cursor-pointer"
+          onClick={() => setIsOpen(false)}
+        >
           &times;
         </div>
         <MenuItem onClick={() => setDeleteModalIsOpen(true)}>Delete</MenuItem>

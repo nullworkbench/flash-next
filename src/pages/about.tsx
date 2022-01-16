@@ -83,7 +83,7 @@ const About: NextPage = () => {
         <p>Just posting it, your code will help someone in the world ;)</p>
       </section>
       {/* 投稿への誘導 */}
-      <section>
+      <section className="text-center mt-24">
         <h2 className="text-4xl font-bold mb-8">Let&apos;s Flash it!</h2>
         <Link href={"/"} passHref>
           <a className="px-20 py-4 bg-yellow-300 rounded-md focus:outline-none">
