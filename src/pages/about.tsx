@@ -57,29 +57,27 @@ const About: NextPage = () => {
           <strong>paste it to Flash</strong>, and <strong>Post</strong>.
           That&apos;s it.
         </p>
-        <p>
-          <ol className="list-decimal pl-8">
-            <li className="mb-2">Copy the code.</li>
-            <li className="mb-2">
-              Paste to Flash. And surround code with @. Flash will autmatially
-              syntax highlight your code.
-              <div>
-                <p>
-                  Ex) If you write like this{" "}
-                  <span className="px-2 py-1 text-sm bg-gray-300">
-                    <code>@@@ display: block; @@@</code>
-                  </span>
-                </p>
-                <p>Flash will show as like this</p>
-                <CodeArea code={"display: block;"} />
-              </div>
-              <span className="text-gray-500">
-                (optional: In addition, please write descriptions.)
-              </span>
-            </li>
-            <li>Post it.</li>
-          </ol>
-        </p>
+        <ol className="list-decimal pl-8">
+          <li className="mb-2">Copy the code.</li>
+          <li className="mb-2">
+            Paste to Flash. And surround code with @. Flash will autmatially
+            syntax highlight your code.
+            <div>
+              <p>
+                Ex) If you write like this{" "}
+                <span className="px-2 py-1 text-sm bg-gray-300">
+                  <code>@@@ display: block; @@@</code>
+                </span>
+              </p>
+              <p>Flash will show as like this</p>
+              <CodeArea code={"display: block;"} />
+            </div>
+            <span className="text-gray-500">
+              (optional: In addition, please write descriptions.)
+            </span>
+          </li>
+          <li>Post it.</li>
+        </ol>
         <p>Just posting it, your code will help someone in the world ;)</p>
       </section>
       {/* 投稿への誘導 */}
