@@ -7,6 +7,7 @@ import {
   unlikePost,
   getPostFromID,
 } from "@/plugins/firestore";
+import { getAuth } from "firebase/auth";
 import { useUserInfo } from "@/stores/contexts";
 import { useRef, useState } from "react";
 import Icon from "@/components/Icon";
@@ -34,23 +35,28 @@ const Home: NextPage<Props> = ({ initialPosts }: Props) => {
   async function post() {
     // ログインしているか
     if (userInfo) {
-      const post = {
-        body: formBody,
-        userId: userInfo.uid,
-      };
-      const docId = await addPost(post);
+      // formが入力されているか
+      if (formBody.match(/\S/g)) {
+        const post = {
+          body: formBody,
+          userId: userInfo.uid,
+        };
+        const docId = await addPost(post);
 
-      if (docId) {
-        // 投稿成功
-        console.log(`Document added with ID: ${docId}`);
-        // 投稿一覧を更新
-        const refreshedPost = await getRecentPosts(10);
-        setPosts([...refreshedPost]);
-        // formのtextareaをクリア
-        setFormBody("");
+        if (docId) {
+          // 投稿成功
+          console.log(`Document added with ID: ${docId}`);
+          // 投稿一覧を更新
+          const refreshedPost = await getRecentPosts(10);
+          setPosts([...refreshedPost]);
+          // formのtextareaをクリア
+          setFormBody("");
+        } else {
+          // 投稿失敗
+          console.log("Unable to add Document.");
+        }
       } else {
-        // 投稿失敗
-        console.log("Unable to add Document.");
+        alert("Please enter the content.");
       }
     } else {
       alert("Please login first.");
@@ -189,7 +195,13 @@ const Home: NextPage<Props> = ({ initialPosts }: Props) => {
               <div className="flex justify-between">
                 <div>@{post.userId}</div>
                 <div>
-                  <PopupMenu docId={post.docId} />
+                  {getAuth().currentUser &&
+                  getAuth().currentUser?.uid == post.userId ? (
+                    // 投稿したユーザーでログイン済みの場合のみメニューを表示
+                    <PopupMenu docId={post.docId} />
+                  ) : (
+                    <></>
+                  )}
                 </div>
               </div>
               <div className="px-4 my-4 sp:px-0">{splitBody(post.body)}</div>
