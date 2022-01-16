@@ -13,6 +13,8 @@ function App({ Component, pageProps }: AppProps) {
         <meta name="robots" content="noindex" />
         {/* タイトル */}
         <title>Flash</title>
+        {/* favicon */}
+        <link rel="icon" type="image/svg" href="/favicon.svg" />
       </Head>
       <div className="font-jp">
         <GlobalHeader />
