@@ -11,6 +11,8 @@ type Props = {
 const PopupMenu: React.FC<Props> = ({ docId }) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
+
   const MenuItem: React.FC = ({ children }) => {
     return <div className="px-2 py-1">{children}</div>;
   };
@@ -43,6 +45,13 @@ const PopupMenu: React.FC<Props> = ({ docId }) => {
           <MenuItem>Delete</MenuItem>
         </div>
       </div>
+      {/* 削除確認モーダル */}
+      <Modal
+        isOpen={deleteModalIsOpen}
+        closeModal={() => setDeleteModalIsOpen(false)}
+      >
+        <p>a</p>
+      </Modal>
     </div>
   );
 };
