@@ -9,17 +9,17 @@ type Props = {
   docId: string;
 };
 
+// Menuの各ボタンのスタイル
+const MenuItem = styled.div`
+  padding: 0.5rem 1rem;
+`;
+
 const PopupMenu: React.FC<Props> = ({ docId }) => {
   // Popupメニューの開閉状態
   const [isOpen, setIsOpen] = useState(false);
 
   // 削除確認モーダルの開閉状態
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
-
-  // Menuの各ボタンのスタイル
-  const MenuItem = styled.div`
-    padding: 0.5rem 1rem;
-  `;
 
   // 削除ボタンが選択されたとき
   async function deleteBtn() {
